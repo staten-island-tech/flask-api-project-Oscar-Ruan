@@ -1,8 +1,0 @@
-{
-  "apps": [
-    {
-      "name":"Coffee API",
-      "script":"start.sh"
-    }
-  ]
-}
