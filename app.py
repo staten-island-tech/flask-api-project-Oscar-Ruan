@@ -2,13 +2,6 @@ from flask import Flask, render_template
 import requests
 
 app = Flask(__name__)
-id = 3
-
-def pokemon_detail(id):
-    response = requests.get(f"https://www.fruityvice.com/api/fruit/{id}")
-    fruit_details = response.json()
-    for fruit in fruit_details:
-        print(fruit)
 
 @app.route("/")
 def index():
@@ -26,8 +19,13 @@ def index():
     return render_template("index.html", fruits=fruits)
 
 @app.route("/pokemon/<int:id>")
-def pokemon_detail(id):
-    response = requests.get(f"https://www.fruityvice.com/api/fruit/{id}")
-    fruit_details = response.json()
-    for fruit in fruit_details:
-        print(fruit)
+def fruity_detail():
+    response = requests.get(f"https://www.fruityvice.com/api/fruit/{fruit["id"]}")
+    data = response.json()
+
+    family = data.get('family')
+    order = data.get('order')
+    genus = data.get('genus')
+    
+
+
