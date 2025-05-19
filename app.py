@@ -3,19 +3,6 @@ import requests
 
 app = Flask(__name__)
 
-
-response = requests.get(f"https://www.fruityvice.com/api/fruit/1")
-data = response.json()
-
-name = []
-
-family = data.get('family')
-order = data.get('order')
-genus = data.get('genus')
-name = data.get('name').capitalize()
-nutrition_names = [[name] for name,value in ['nutritions']]
-
-print(family,order,genus,name)
 @app.route("/")
 def index():
     response = requests.get("https://www.fruityvice.com/api/fruit/all")
@@ -33,15 +20,32 @@ def index():
     return render_template("index.html", fruits=fruits)
 
 
-@app.route("/pokemon/<int:id>")
+@app.route("/fruit/<int:id>")
 def fruity_detail(id):
     response = requests.get(f"https://www.fruityvice.com/api/fruit/{id}")
     data = response.json()
 
-    name = []
+    fruit_names = []
+    fruit_value = []
 
     family = data.get('family')
     order = data.get('order')
     genus = data.get('genus')
     name = data.get('name').capitalize()
-    nutrition_names = [[name] for name,value in ['nutritions']]
+
+    for key, values in data['nutritions'].items():
+        fruit_names.append(key)
+        fruit_value.append(values)
+
+    return render_template("fruits.html", fruit={
+        'name': name,
+        'id': id,
+        'family': family,
+        'order': order,
+        'genus': genus,
+        'fruit_names': fruit_names,
+        'fruit_value': fruit_value
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True)
