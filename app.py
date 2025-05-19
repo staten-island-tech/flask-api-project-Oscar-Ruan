@@ -3,6 +3,19 @@ import requests
 
 app = Flask(__name__)
 
+
+response = requests.get(f"https://www.fruityvice.com/api/fruit/1")
+data = response.json()
+
+name = []
+
+family = data.get('family')
+order = data.get('order')
+genus = data.get('genus')
+name = data.get('name').capitalize()
+nutrition_names = [[name] for name,value in ['nutritions']]
+
+print(family,order,genus,name)
 @app.route("/")
 def index():
     response = requests.get("https://www.fruityvice.com/api/fruit/all")
@@ -22,7 +35,7 @@ def index():
 
 @app.route("/pokemon/<int:id>")
 def fruity_detail(id):
-    response = requests.get(f"https://www.fruityvice.com/api/fruit/1")
+    response = requests.get(f"https://www.fruityvice.com/api/fruit/{id}")
     data = response.json()
 
     name = []
@@ -31,4 +44,4 @@ def fruity_detail(id):
     order = data.get('order')
     genus = data.get('genus')
     name = data.get('name').capitalize()
-    nutrition_names = data.get('nutritions')
+    nutrition_names = [[name] for name,value in ['nutritions']]
