@@ -16,6 +16,8 @@ def index():
             'name': fruit['name'].capitalize(),
             'id': fruit['id']
         })
+    
+    fruits.sort(key=lambda f: f['id'])
 
     return render_template("index.html", fruits=fruits)
 

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Freak Ton of Random Fruits I'll Never Learn</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <h1>Fruits That Are Not Know to the Face of the Planet</h1>
+  <ul>
+    {% for fruit in fruits %}
+      <li>
+        <a href="{{ url_for('fruity_detail', id=fruit.id) }}">{{ fruit.name }} (ID: {{ fruit.id }})</a>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
