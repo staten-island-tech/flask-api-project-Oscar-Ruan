@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for, abort
 import requests
 
 app = Flask(__name__)
@@ -24,30 +24,49 @@ def index():
 
 @app.route("/fruit/<int:id>")
 def fruity_detail(id):
-    response = requests.get(f"https://www.fruityvice.com/api/fruit/{id}")
-    data = response.json()
+    
+    try:
+        response = requests.get(f"https://www.fruityvice.com/api/fruit/{id}")
+        response.raise_for_status()
+        data = response.json()
+    except requests.exceptions.RequestException:
+        abort(404)
 
-    fruit_names = []
-    fruit_value = []
-
+    name = data.get('name').capitalize()
+    fruit_id = data.get('id')
     family = data.get('family')
     order = data.get('order')
     genus = data.get('genus')
-    name = data.get('name').capitalize()
+
+    fruit_names = []
+    fruit_value = []
 
     for key, values in data['nutritions'].items():
         fruit_names.append(key)
         fruit_value.append(values)
 
+    nutrition = zip(fruit_names, fruit_value)
+
     return render_template("fruits.html", fruit={
         'name': name,
-        'id': id,
+        'id': fruit_id,
         'family': family,
         'order': order,
         'genus': genus,
-        'fruit_names': fruit_names,
-        'fruit_value': fruit_value
+        'nutrition': nutrition
     })
+
+
+@app.route("/search")
+def search_by_id():
+    fruit_id = request.args.get("fruit_id", type=int)
+    if fruit_id is None:
+        return redirect(url_for("index"))
+    return redirect(url_for("fruity_detail", id=fruit_id))
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template("404.html"), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
