@@ -34,6 +34,19 @@
     </div>
 
     <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to all Fruits</a>
+    <form action="{{ url_for('book_fruit') }}" method="POST" class="mt-4">
+      <input type="hidden" name="fruit_id" value="{{ fruit.id }}">
+      <div class="mb-3">
+        <label for="name" class="form-label">Your Name</label>
+        <input type="text" class="form-control" name="name" required>
+      </div>
+      <div class="mb-3">
+        <label for="quantity" class="form-label">Quantity to Purchase</label>
+        <input type="number" class="form-control" name="quantity" min="1" required>
+      </div>
+      <button type="submit" class="btn btn-success">Purchase</button>
+    </form>
+    
   </div>
 </body>
 </html>

@@ -68,5 +68,25 @@ def search_by_id():
 def not_found(error):
     return render_template("404.html"), 404
 
+@app.route("/book", methods=["POST"])
+def book_fruit():
+    fruit_id = request.form.get("fruit_id", type=int)
+    quantity = request.form.get("quantity", type=int)
+    name = request.form.get("name", type=str)
+
+    if not fruit_id or not quantity:
+        abort(400)
+
+    try:
+        response = requests.get(f"https://www.fruityvice.com/api/fruit/{fruit_id}")
+        response.raise_for_status()
+        data = response.json()
+    except requests.exceptions.RequestException:
+        abort(404)
+
+    fruit_name = data.get('name').capitalize()
+
+    return render_template("booking.html", fruit_name=fruit_name, quantity=quantity, name=name)
+
 if __name__ == '__main__':
     app.run(debug=True)
