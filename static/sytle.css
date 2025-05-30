@@ -1,8 +1,8 @@
 body {
   font-family: Arial, sans-serif;
-  text-align: center;
   margin: 0;
   padding: 0;
+  text-align: center;
   background-color: #ffffff;
 }
 
@@ -15,5 +15,4 @@ h1 {
 #map {
   height: 80vh;
   width: 100%;
-  margin: 0 auto;
 }
